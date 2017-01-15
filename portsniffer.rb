@@ -46,8 +46,16 @@ end
 results.map! {|port_number| port_number.value}
 results.flatten!
 
+def get_service_name(port_number)
+  begin
+    return Socket.getservbyport(port_number)
+  rescue
+    return 'Unknown'
+  end
+end
+
 for port_number in results.select {|port_number| port_number != nil}
-  puts "#{port_number} Open"
+  puts "#{port_number} - #{get_service_name(port_number)} - Open"
 end
 
 puts 'Done generating!'
